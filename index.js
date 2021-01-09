@@ -4,12 +4,15 @@ const Datastore = require('nedb');
 
 const app = express();
 const database = new Datastore('dbase.db');
+const port = process.env.PORT || 3000;
 
 database.loadDatabase();
 
-app.listen(3000, ()=> console.log('listening to port 3000'))
+app.listen(port, ()=> console.log(`listening to port ${port}`))
 app.use(express.static('public'));
 app.use(express.json({limit:'1mb'}))
+
+
 
 app.post('/data', (request, response)=>{
     console.log(request.body);
