@@ -15,58 +15,38 @@
     </script>
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
-    <style>
-        #myMap{
-            height: 360px;
-        }
-    </style>
+        <style>
+            #myMap{
+                height: 360px;
+            }
+        </style>
     <title>Document</title>
 </head>
 <body>
     <div id="myMap"></div>
-    <a href="mapit.html">Map It</a>
-    <script>
-
-    
-    if('geolocation' in navigator) {
-
-        const mymap = L.map('myMap').setView([26.226198999999998, 50.5860755], 18); // creating the map view
+    <script>   
+            const mymap = L.map('myMap').setView([26.226198999999998, 50.5860755], 18); // creating the map view
             const attribution = 
                 '&copy; <a herf="https://www.openstreetmap.org">OpenStreetMap</a> contributors'; // needed to everytime you will use the open stres
             const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';// link of the tiles that consist of images of the map
             const tiles = L.tileLayer(tileUrl, { attribution }) //this will display the map
             tiles.addTo(mymap);
+         
 
-        let lat, lon;
-        navigator.geolocation.watchPosition(async position => {
-            lat = position.coords.latitude;
-            lon =  position.coords.longitude;
-            // console.log(lat,lon)
-            const mapData = () =>{
-                const marker = L.marker([lat,lon]).addTo(mymap);
+            const dataGeo = async () =>{
+                const response = await fetch('/dataGet');
+                const data = await response.json()
+                console.log(data);
+
+                for(item of data){
+                    const marker = L.marker([item.lat,item.lon]).addTo(mymap);
+                }
             }
-            mapData(lat,lon);
+            dataGeo();
 
-            const dataPost = { lat, lon };
-            console.log(lat, lon);
-            const option = {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                            },
-                        body: JSON.stringify(dataPost)
-                    }
-            const response = await fetch('/data', option);
-            const dataBack = await response.json();
-            console.log(dataBack)
             
-        });
-       
-        
 
-    } else {
-        console.log('GEOLOCATION IS NOT AVAILABLE')
-    }
+
     </script>
 </body>
 </html>
