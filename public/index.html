@@ -37,6 +37,8 @@
             const tiles = L.tileLayer(tileUrl, { attribution }) //this will display the map
             tiles.addTo(mymap);
 
+       
+
         let lat, lon;
         navigator.geolocation.watchPosition(async position => {
             lat = position.coords.latitude;
